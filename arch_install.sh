@@ -74,8 +74,6 @@ echo "Yerel saat icin bolge bilgisi girin: (orn: Europe/Istanbul)"
 echo "-------------------------------------------------"
 read zoneinfo
 sleep 3s
-timedatectl --no-ask-password set-timezone $zoneinfo
-timedatectl --no-ask-password set-ntp true
 ln -sf /usr/share/zoneinfo/$zoneinfo /etc/localtime
 hwclock --systohc --utc
 
@@ -92,14 +90,12 @@ echo "Klavye ayarlari icin deger girin :(orn: trq)"
 echo "-------------------------------------------------"
 read locale
 sleep 1s
-localectl --no-ask-password set-keymap $locale
 echo "KEYMAP=$locale" >> /etc/vconsole.conf
 echo "-------------------------------------------------"
 echo "Ana makine adi icin deger girin"
 echo "-------------------------------------------------"
 read hostname
 sleep 1s
-hostnamectl --no-ask-password set-hostname $hostname
 echo "$hostname" >> /etc/hostname.conf
 echo "
 127.0.0.1   localhost
@@ -116,9 +112,9 @@ echo "Kullanici icin parola girin:"
 echo "-------------------------------------------------"
 read pswd
 sleep 1s
-$usersadd:$pswd | chpasswd
-root:$pswd | chpasswd
-sed -i 's/^# %wheel ALL=(ALL) NOPASSWD: ALL/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
+echo "$usersadd:$pswd" | chpasswd --encrypted
+echo "root:$pswd" | chpasswd --encrypted
+echo "$usersadd ALL=(ALL:ALL) ALL >> /etc/sudoers.d/10-$usersadd"
 echo "-------------------------------------------------"
 echo "Kullanici parolasi root parolasi olarak atandi:"
 echo "-------------------------------------------------"
