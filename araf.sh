@@ -218,16 +218,16 @@ echo "{$BWhite}-------------------------------------------------{$CO}"
 read rootpasswd
 arch-chroot /mnt /bin/bash -c "(echo $rootpasswd ; echo $rootpasswd) | passwd root"
 
-arch-chroot /mnt /bin/bash -c "pacman -Sy bspwm sxhkd dmenu alacritty thunar rofi rxvt-unicode --noconfirm"
+arch-chroot /mnt /bin/bash -c "pacman -Sy bspwm sxhkd dmenu alacritty thunar rofi rxvt-unicode sddm --noconfirm"
 arch-chroot /mnt /bin/bash -c "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=$hostname"
 arch-chroot /mnt /bin/bash -c "grub-mkconfig -o /boot/grub/grub.cfg"
 arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
-arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
+arch-chroot /mnt /bin/bash -c "systemctl enable sddm"
 
 mkdir -p /mnt/home/$user/.config/bspwm
 mkdir -p /mnt/home/$user/.config/sxhkd
 
 arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/bspwmrc /home/$user/.config/bspwm/"
 arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/sxhkdrc /home/$user/.config/sxhkd/"
-
+echo "setxkbmap $keymap &" > /mnt/home/$user/.config/sxhkd/sxhkdrc
 arch-chroot /mnt /bin/bash -c "chown -R $user:$user /home/$user/"
