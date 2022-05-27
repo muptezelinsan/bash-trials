@@ -231,9 +231,18 @@ echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 mkdir -p /mnt/home/$user/.config/bspwm
 mkdir -p /mnt/home/$user/.config/sxhkd
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/bspwmrc /home/$user/.config/bspwm/"
-arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/sxhkdrc /home/$user/.config/sxhkd/"
+arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/bspwmrc $HOME/.config/bspwm/"
+arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/sxhkdrc $HOME/.config/sxhkd/"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
+
+arch-chroot /mnt /bin/bash -c "chown -R $user:$user $HOME/" 
+
+echo "${Bold}${White}-------------------------------------------------${Sgr0}"
+echo "${Yellow}Alacritty varsayilan terminal olarak ayarlaniyor${Sgr0}"
+echo "${Bold}${White}-------------------------------------------------${Sgr0}"
+sed -i 's/urxvt/alacritty/g' /mnt/$HOME/.config/sxhkd/sxhkdrc
+echo ""
+sleep 1
 
 cat << EOF >> /mnt/home/$user/.config/bspwm/bspwmrc
 ###
