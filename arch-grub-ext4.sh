@@ -1,4 +1,7 @@
 #!/bin/bash
+
+### Archlinux boot/efi bspwm kurulumu
+
 Bold=$(tput bold)
 Sgr0=$(tput sgr0)
 Black=$(tput setaf 0)
@@ -71,6 +74,7 @@ echo "${Yellow}Swap icin partisyon secin (Ornek: sda , vda) ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 read swappart
 mkfs.ext4 /dev/$swappart
+swapon /dev/$swappart
 else
 echo "${Bold}${Red}Swap partisyonu atlaniyor${Sgr0}"
 fi
@@ -115,7 +119,6 @@ echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 echo "${Yellow}Montaj islemleri yapiliyor${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 mount /dev/$efipart /mnt/boot/efi
-swapon /dev/$swappart
 file="/mnt/home"
 if [ -e $file ]; then
 mount /dev/$homepart /mnt/home
@@ -231,7 +234,23 @@ echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/bspwmrc /home/$user/.config/bspwm/"
 arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/sxhkdrc /home/$user/.config/sxhkd/"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "setxkbmap $keymap &" > /mnt/home/$user/.config/bspwm/bspwmrc
+
+cat << EOF >> /mnt/home/$user/.config/bspwm/bspwmrc
+###
+# Autostart
+###
+bash $HOME/.config/bspwm/autostart.sh &
+EOF
+echo "${Bold}${White}-------------------------------------------------${Sgr0}"
+cat << EOF >> /mnt/home/$user/.config/bspwm/autostart.sh
+###
+# Autostart
+###
+# X11 set keymap
+setxkbmap $keymap &
+EOF
+chmod a+x $HOME/.config/bspwm/autostart.sh
+
 arch-chroot /mnt /bin/bash -c "chown -R $user:$user /home/$user/"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
