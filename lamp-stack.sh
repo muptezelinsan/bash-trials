@@ -74,7 +74,7 @@ mariadb_install() {
 php_install() {
 	echo -e "${Bold}${Blue} Php yukleniyor...${Sgr0}"
 	printf "\n"
-	pacman -S php php-apache --noconfirm
+	pacman -S php php-cgi php-gd php-pgsql php-apache --noconfirm
 	printf "\n"
 	echo -e "${Bold}${White} Php modulleri yapilandiriliyor...${Sgr0}"
 	printf "\n"
@@ -101,11 +101,10 @@ php_install() {
 phpmyadmin_install() {
 	echo -e "${Bold}${Blue} phpMyAdmin yukleniyor...${Sgr0}"
 	printf "\n"
-	pacman -S php-mcrypt phpmyadmin --noconfirm
+	pacman -S phpmyadmin --noconfirm
 	printf "\n"
 	echo -e "${Bold}${White} phpMyAdmin modulleri yapilandiriliyor...${Sgr0}"
 	printf "\n"
-	touch /etc/httpd/conf/extra/phpmyadmin.conf
 	echo 'Alias /phpmyadmin "/usr/share/webapps/phpMyAdmin"' > /etc/httpd/conf/extra/phpmyadmin.conf
 	echo '<Directory "/usr/share/webapps/phpMyAdmin">' >> /etc/httpd/conf/extra/phpmyadmin.conf
 	echo 'DirectoryIndex index.php' >> /etc/httpd/conf/extra/phpmyadmin.conf
@@ -113,8 +112,9 @@ phpmyadmin_install() {
 	echo 'Options FollowSymlinks' >> /etc/httpd/conf/extra/phpmyadmin.conf
 	echo 'Require all granted' >> /etc/httpd/conf/extra/phpmyadmin.conf
 	echo '</Directory>' >> /etc/httpd/conf/extra/phpmyadmin.conf
-	sed -i '$a\\nInclude conf\/extra\/phpmyadmin.conf' /etc/httpd/conf/httpd.conf
+    echo "Include conf/extra/phpmyadmin.conf" >> /etc/httpd/conf/httpd.conf
 	sed -i '29s/cookie/config/' /etc/webapps/phpmyadmin/config.inc.php
+	echo -e "${Bold}${red} PhpMyAdmin root kullanicisi icin parola girin{Sgr0}"
 	sed -i '30 i\$cfg['Servers'][$i]['user'] = 'root';' /etc/webapps/phpmyadmin/config.inc.php
 	sed -i '31 i\$cfg['Servers'][$i]['password'] = '';' /etc/webapps/phpmyadmin/config.inc.php
 	sed -i '35s/false/true/' /etc/webapps/phpmyadmin/config.inc.php
@@ -131,20 +131,20 @@ phpmyadmin_install() {
 }
 
 ########################### KONFİGÜRASYONLAR ###############################
-finalize() {
-    echo -e "${Bold}${Yellow} Konfigurasyonlar tanimlaniyor...${Sgr0}"
-	printf "\n"
-	cp -f httpd.conf /etc/httpd/conf/httpd.conf
-	cp -f php.ini /etc/php/php.ini
-	cp -f phpmyadmin.conf /etc/httpd/conf/extra/phpmyadmin.conf
-	cp -f config.inc.php /etc/webapps/phpmyadmin/config.inc.php
-	printf "\n"
-	echo -e "${Bold}${Green} Konfigurasyonlar basarili bir sekilde tanimlandi..!${Sgr0}"
-    sleep 3
-}
+#finalize() {
+#    echo -e "${Bold}${Yellow} Konfigurasyonlar tanimlaniyor...${Sgr0}"
+#	printf "\n"
+#	cp -f httpd.conf /etc/httpd/conf/httpd.conf
+#	cp -f php.ini /etc/php/php.ini
+#	cp -f phpmyadmin.conf /etc/httpd/conf/extra/phpmyadmin.conf
+#	cp -f config.inc.php /etc/webapps/phpmyadmin/config.inc.php
+#	printf "\n"
+#	echo -e "${Bold}${Green} Konfigurasyonlar basarili bir sekilde tanimlandi..!${Sgr0}"
+#   sleep 3
+#}
 
 ############################################################################
-########################### yUKLEME KOMUTLARI ###############################
+########################### YUKLEME KOMUTLARI ###############################
     clear
     echo -e "${Bold}${Yellow} Lamp yigini yukleniyor...${Sgr0}"
     printf "\n"
@@ -156,8 +156,6 @@ finalize() {
     php_install
     printf "\n"
     phpmyadmin_install
-    printf "\n"
-    finalize
     printf "\n"
     sleep 3
     exit
