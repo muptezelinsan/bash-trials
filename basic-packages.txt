@@ -10,5 +10,5 @@ firefox-i18n-tr
 rofi
 zsh
 zsh-autosuggestions
-zsh-fast-syntax-highlighting-git
 rxvt-unicode
+bash-completion
