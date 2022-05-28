@@ -15,7 +15,7 @@ Cyan=$(tput setaf 6)
 White=$(tput setaf 7)
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Aynalar guncelleniyor----------------------------------${Sgr0}"
+echo "${Yellow}Aynalar guncelleniyor ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 reflector --verbose --latest 10 --sort rate --save /etc/pacman.d/mirrorlist
 cat /etc/pacman.d/mirrorlist
@@ -35,7 +35,7 @@ YesOrNo() {
 }
 if $( YesOrNo ); then
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Disk bolumlemesi icin cfdisk komutu calistiriliyor-----${Sgr0}"
+echo "${Yellow}Disk bolumlemesi icin cfdisk komutu calistiriliyor ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 cfdisk
 else
@@ -64,7 +64,7 @@ YesOrNo() {
 }
 if $( YesOrNo ); then
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Swap icin partisyon secin (Ornek: sdaX , vdaX)---------${Sgr0}"
+echo "${Yellow}Swap icin partisyon secin (Ornek: sdaX , vdaX) ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 read swappart
 mkswap /dev/$swappart
@@ -155,7 +155,7 @@ echo ""
 echo "##############################################################################"
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Montaj islemleri yapiliyor-----------------------------${Sgr0}"
+echo "${Yellow}Montaj islemleri yapiliyor ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 mount /dev/$efipart /mnt/boot/efi
 file="/mnt/home"
@@ -170,9 +170,9 @@ echo ""
 echo "##############################################################################"
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Temel paket yuklemeleri yapiliyor----------------------${Sgr0}"
+echo "${Yellow}Temel paket yuklemeleri yapiliyor ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-pacstrap -i /mnt base base-devel linux linux-headers linux-firmware nano networkmanager git curl grub mtools dosfstools efibootmgr os-prober --noconfirm
+pacstrap -i /mnt base base-devel linux linux-headers linux-firmware nano networkmanager sddm git curl grub mtools dosfstools efibootmgr os-prober --noconfirm
 echo ""
 echo "##############################################################################"
 ##############################################################################
@@ -185,7 +185,7 @@ echo ""
 echo "##############################################################################"
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Donanim saati ayarlaniyor...---------------------------${Sgr0}"
+echo "${Yellow}Donanim saati ayarlaniyor ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 timedatectl set-ntp true
 echo ""
@@ -196,7 +196,7 @@ echo "##########################################################################
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
-echo "${Yellow}CHROOT islemlerine geciliyor----------------------------${Sgr0}"
+echo "${Yellow}CHROOT islemlerine geciliyor ${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
@@ -206,7 +206,7 @@ sleep 3
 ##############################################################################
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Yerel zaman bolgesi ayarlaniyor------------------------${Sgr0}"
+echo "${Yellow}Yerel zaman bolgesi ayarlaniyor ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 arch-chroot /mnt /bin/bash -c "pacman -Sy curl --noconfirm"
 arch-chroot /mnt /bin/bash -c "ln -sf /usr/share/zoneinfo/$(curl https://ipapi.co/timezone) /etc/localtime"
@@ -216,7 +216,7 @@ echo ""
 echo "##############################################################################"
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Sistem dilini girin (Ornek : en_US , tr_TR)------------${Sgr0}"
+echo "${Yellow}Sistem dilini girin (Ornek : en_US , tr_TR) ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 read lang
 echo "$lang.UTF-8 UTF-8" > /mnt/etc/locale.gen
@@ -228,7 +228,7 @@ echo ""
 echo "##############################################################################"
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow} Klavye dilini girin (Ornek : us , trq)----------------${Sgr0}"
+echo "${Yellow} Klavye dilini girin (Ornek : us , trq) ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 read keymap
 echo "KEYMAP=$keymap" > /mnt/etc/vconsole.conf
@@ -238,7 +238,7 @@ echo ""
 echo "##############################################################################"
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Ana makine adini girin---------------------------------${Sgr0}"
+echo "${Yellow}Ana makine adini girin ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 read hostname
 echo "$hostname" > /mnt/etc/hostname
@@ -252,7 +252,7 @@ echo ""
 echo "##############################################################################"
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Yeni kullanici olusturun-------------------------------${Sgr0}"
+echo "${Yellow}Yeni kullanici olusturun ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 read user
 arch-chroot /mnt /bin/bash -c "useradd -mG wheel $user"
@@ -260,7 +260,7 @@ echo ""
 echo "##############################################################################"
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}$user kullanicisi icin parola belirleyin---------------${Sgr0}"
+echo "${Yellow}$user kullanicisi icin parola belirleyin ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 read userpasswd
 arch-chroot /mnt /bin/bash -c "(echo $userpasswd ; echo $userpasswd) | passwd $user"
@@ -286,7 +286,7 @@ echo "##########################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 cp basic-packages.txt /mnt/home/$user/
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-arch-chroot /mnt /bin/bash -c "pacman -Sy --noconfirm < /home/$user/basic-packages.txt"
+arch-chroot /mnt /bin/bash -c "pacman -Sy --noconfirm - < /home/$user/basic-packages.txt"
 ##############################################################################
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 arch-chroot /mnt /bin/bash -c "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=$hostname"
@@ -330,7 +330,7 @@ echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Kurulum tamamlandı--------------------------------------${Sgr0}"
+echo "${Yellow}Kurulum tamamlandı ${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
