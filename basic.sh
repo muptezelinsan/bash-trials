@@ -26,7 +26,7 @@ echo "tr_TR.UTF-8 UTF-8" >> /mnt/etc/locale.gen
 echo "LANG=tr_TR.UTF-8" >> /mnt/etc/locale.conf
 echo "KEYMAP=trq" >> /mnt/etc/vconsole.conf
 locale-gen
-echo "ikikarinca" >> /mnt/etc/localtime
+echo "ikikarinca" >> /mnt/etc/hostname
 echo "
 127.0.0.1   localhost
 ::1         localhost
@@ -35,7 +35,7 @@ echo "
 arch-chroot /mnt /bin/bash -c "useradd -mG wheel ahmet"
 arch-chroot /mnt /bin/bash -c "passwd ahmet"
 arch-chroot /mnt /bin/bash -c "passwd"
-arch-chroot /mnt /bin/bash -c "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=BASIC"
+arch-chroot /mnt /bin/bash -c "grub-install --target=x86_64-efi --efi-directory=/boot/efi/ --bootloader-id=BASIC"
 arch-chroot /mnt /bin/bash -c "grub-mkmconfig -o /boot/grub/grub.cfg"
 
 arch-chroot /mnt /bin/bash -c "systemctl enable networkmanager"
