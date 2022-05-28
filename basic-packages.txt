@@ -11,3 +11,4 @@ rofi
 zsh
 zsh-autosuggestions
 zsh-fast-syntax-highlighting-git
+rxvt-unicode
