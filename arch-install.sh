@@ -73,7 +73,7 @@ echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 echo "${Yellow}Swap icin partisyon secin (Ornek: sda , vda) ${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 read swappart
-mkfs.ext4 /dev/$swappart
+mkswap /dev/$swappart
 swapon /dev/$swappart
 else
 echo "${Bold}${Red}Swap partisyonu atlaniyor${Sgr0}"
