@@ -128,7 +128,7 @@ sleep 1
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 echo "${Yellow}Temel paket yuklemeleri yapiliyor${Sgr0}"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-pacstrap -i /mnt base base-devel linux linux-headers linux-firmware nano networkmanager git grub mtools dosfstools efibootmgr os-prober reflector python rsync zsh --noconfirm
+pacstrap -i /mnt base base-devel linux linux-headers linux-firmware nano networkmanager git curl grub mtools dosfstools efibootmgr os-prober reflector rsync --noconfirm
 echo ""
 sleep 1
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
@@ -218,7 +218,9 @@ sleep 1
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 arch-chroot /mnt /bin/bash -c "(echo $rootpasswd ; echo $rootpasswd) | passwd root"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-arch-chroot /mnt /bin/bash -c "pacman -Sy bspwm sxhkd dmenu alacritty thunar rofi rxvt-unicode sddm --noconfirm"
+arch-chroot /mnt /bin/bash -c "https://raw.githubusercontent.com/muptezelinsan/bash-deneme/main/basic-packages.txt"
+echo "${Bold}${White}-------------------------------------------------${Sgr0}"
+arch-chroot /mnt /bin/bash -c "pacman -Sy --noconfirm < basic-packages.txt"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 arch-chroot /mnt /bin/bash -c "grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=$hostname"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
@@ -234,16 +236,8 @@ echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/bspwmrc $HOME/.config/bspwm/"
 arch-chroot /mnt /bin/bash -c "cp /usr/share/doc/bspwm/examples/sxhkdrc $HOME/.config/sxhkd/"
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-
 arch-chroot /mnt /bin/bash -c "chown -R $user:$user $HOME/" 
-
 echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Alacritty varsayilan terminal olarak ayarlaniyor${Sgr0}"
-echo "${Bold}${White}-------------------------------------------------${Sgr0}"
-sed -i 's/urxvt/alacritty/g' /mnt/$HOME/.config/sxhkd/sxhkdrc
-echo ""
-sleep 1
-
 cat << EOF >> /mnt/home/$user/.config/bspwm/bspwmrc
 ###
 # Autostart
@@ -258,13 +252,16 @@ cat << EOF >> /mnt/home/$user/.config/bspwm/autostart.sh
 # X11 set keymap
 setxkbmap $keymap &
 EOF
+echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 chmod a+x $HOME/.config/bspwm/autostart.sh
-
+echo "${Bold}${White}-------------------------------------------------${Sgr0}"
 arch-chroot /mnt /bin/bash -c "chown -R $user:$user /home/$user/"
+echo "${Bold}${White}-------------------------------------------------${Sgr0}"
+
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
-echo "${Yellow}Kurulum tamamlandı--------------------${Sgr0}"
+echo "${Yellow}Kurulum tamamlandı--------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
 echo "${Bold}${Yellow}-------------------------------------------------${Sgr0}"
